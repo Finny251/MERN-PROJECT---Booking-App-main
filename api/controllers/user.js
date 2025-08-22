@@ -35,4 +35,11 @@ export const getUsers = async (req,res,next)=>{
   } catch (err) {
     next(err);
   }
+<<<<<<< HEAD
 }
+=======
+}
+
+
+
+>>>>>>> 895f4278cd300f98295191297723a8c0711282fe
