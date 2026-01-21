@@ -11,7 +11,7 @@ const Datatable = ({ columns }) => {
 
   const [list, setList] = useState([]);
   const { data, loading, error } = useFetch(
-    `http://localhost:8800/api/${path}`
+    `process.env.REACT_APP_API_URL/${path}`
   );
 
   useEffect(() => {
