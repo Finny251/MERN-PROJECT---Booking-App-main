@@ -2,7 +2,6 @@ import "./home.css";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import { useContext } from "react";
-import { SearchContext } from "../../context/SearchContext";
 import useFetch from "../../hooks/useFetch";
 import SearchItem from "../../components/searchItem/SearchItem";
 
