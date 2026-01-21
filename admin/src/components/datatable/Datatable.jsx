@@ -21,6 +21,7 @@ const Datatable = ({ columns }) => {
   const handleDelete = async (id) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
+      if (!user?.accessToken) return;
 
       await axios.delete(`http://localhost:8800/api/${path}/${id}`, {
         headers: {
