@@ -4,7 +4,6 @@ import "./reserve.css";
 
 import useFetch from "../../hooks/useFetch";
 import { useContext, useState } from "react";
-import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -13,38 +12,10 @@ const Reserve = ({ setOpen, hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
 
   // ✅ FIX 1: correct API path
-  const { data, loading } = useFetch(`/api/hotels/room/${hotelId}`);
+  const { data, loading } = useFetch(`/api/rooms/${hotelId}`);
 
-  const { dates } = useContext(SearchContext);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  // ✅ FIX 2: safe date handling
-  const getDatesInRange = (startDate, endDate) => {
-    if (!startDate || !endDate) return [];
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const date = new Date(start.getTime());
-    const dates = [];
-
-    while (date <= end) {
-      dates.push(new Date(date).getTime());
-      date.setDate(date.getDate() + 1);
-    }
-    return dates;
-  };
-
-  const alldates =
-    dates && dates.length > 0
-      ? getDatesInRange(dates[0].startDate, dates[0].endDate)
-      : [];
-
-  const isAvailable = (roomNumber) => {
-    const isFound = roomNumber.unavailableDates?.some((date) =>
-      alldates.includes(new Date(date).getTime())
-    );
-    return !isFound;
-  };
 
   const handleSelect = (e) => {
     const checked = e.target.checked;
@@ -57,21 +28,21 @@ const Reserve = ({ setOpen, hotelId }) => {
     );
   };
 
-  // ✅ FIX 3: send token + correct API path
+  // ✅ FIX 2: simplified availability update (no dates)
   const handleClick = async () => {
     try {
       await Promise.all(
-        selectedRooms.map((roomId) => {
-          return axios.put(
+        selectedRooms.map((roomId) =>
+          axios.put(
             `/api/rooms/availability/${roomId}`,
-            { dates: alldates },
+            {},
             {
               headers: {
                 Authorization: `Bearer ${user.accessToken}`,
               },
             }
-          );
-        })
+          )
+        )
       );
 
       setOpen(false);
@@ -113,7 +84,6 @@ const Reserve = ({ setOpen, hotelId }) => {
                     type="checkbox"
                     value={roomNumber._id}
                     onChange={handleSelect}
-                    disabled={!isAvailable(roomNumber)}
                   />
                 </div>
               ))}
