@@ -27,7 +27,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:8800/api/auth/register",
+        `${process.env.REACT_APP_API_URL}/auth/register`,
         credentials
       );
       navigate("/login");
