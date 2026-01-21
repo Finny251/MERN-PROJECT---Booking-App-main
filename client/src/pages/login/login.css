@@ -1,0 +1,37 @@
+.login {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+}
+
+.lInput {
+  height: 35px;
+  padding: 8px;
+}
+
+.lButton {
+  border: none;
+  padding: 10px;
+  background-color: #0071c2;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.lButton:disabled {
+  background-color: #0071c28c;
+  cursor: not-allowed;
+}
+
+.loginError {
+  color: red;
+  font-size: 12px;
+}
