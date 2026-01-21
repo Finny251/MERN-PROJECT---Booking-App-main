@@ -1,18 +1,12 @@
 import "./list.css";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
-import { useContext, useState } from "react";
-import { format } from "date-fns";
-import { DateRange } from "react-date-range";
+import { useState } from "react";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
-import { SearchContext } from "../../context/SearchContext";
 
 const List = () => {
-  const { city, dates, options } = useContext(SearchContext);
-
-  const [destination, setDestination] = useState(city || "");
-  const [openDate, setOpenDate] = useState(false);
+  const [destination, setDestination] = useState("");
   const [min, setMin] = useState(undefined);
   const [max, setMax] = useState(undefined);
 
@@ -38,32 +32,14 @@ const List = () => {
               <label>Destination</label>
               <input
                 type="text"
-                placeholder={destination}
+                placeholder="City"
                 onChange={(e) => setDestination(e.target.value)}
               />
             </div>
 
             <div className="lsItem">
-              <label>Check-in Date</label>
-              <span onClick={() => setOpenDate(!openDate)}>
-                {dates && dates.length > 0
-                  ? `${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(
-                      dates[0].endDate,
-                      "MM/dd/yyyy"
-                    )}`
-                  : "Select dates"}
-              </span>
-
-              {openDate && dates && (
-                <DateRange
-                  ranges={dates}
-                  minDate={new Date()}
-                />
-              )}
-            </div>
-
-            <div className="lsItem">
               <label>Options</label>
+
               <div className="lsOptions">
                 <div className="lsOptionItem">
                   <span className="lsOptionText">
@@ -86,36 +62,6 @@ const List = () => {
                     className="lsOptionInput"
                   />
                 </div>
-
-                <div className="lsOptionItem">
-                  <span className="lsOptionText">Adult</span>
-                  <input
-                    type="number"
-                    min={1}
-                    className="lsOptionInput"
-                    placeholder={options?.adult}
-                  />
-                </div>
-
-                <div className="lsOptionItem">
-                  <span className="lsOptionText">Children</span>
-                  <input
-                    type="number"
-                    min={0}
-                    className="lsOptionInput"
-                    placeholder={options?.children}
-                  />
-                </div>
-
-                <div className="lsOptionItem">
-                  <span className="lsOptionText">Room</span>
-                  <input
-                    type="number"
-                    min={1}
-                    className="lsOptionInput"
-                    placeholder={options?.room}
-                  />
-                </div>
               </div>
             </div>
 
@@ -123,15 +69,11 @@ const List = () => {
           </div>
 
           <div className="listResult">
-            {loading ? (
-              "Loading..."
-            ) : (
-              <>
-                {data.map((item) => (
+            {loading
+              ? "Loading..."
+              : data.map((item) => (
                   <SearchItem item={item} key={item._id} />
                 ))}
-              </>
-            )}
           </div>
         </div>
       </div>
