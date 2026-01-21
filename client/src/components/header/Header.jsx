@@ -14,7 +14,6 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 
 const Header = ({ type }) => {
@@ -36,7 +35,6 @@ const Header = ({ type }) => {
 
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  const { dispatch } = useContext(SearchContext);
 
   const handleOption = (name, operation) => {
     setOptions((prev) => ({
@@ -46,15 +44,9 @@ const Header = ({ type }) => {
   };
 
   const handleSearch = () => {
-    dispatch({
-      type: "NEW_SEARCH",
-      payload: {
-        city: destination,   // ✅ CRITICAL FIX
-        dates,
-        options,
-      },
-    });
-    navigate("/hotels");
+    navigate(
+      `/hotels?city=${destination}&min=0&max=999`
+    );
   };
 
   return (
@@ -90,7 +82,7 @@ const Header = ({ type }) => {
             </h1>
             <p className="headerDesc">
               Get rewarded for your travels – unlock instant savings of 10% or more
-              with a free Lamabooking account
+              with a free account
             </p>
 
             {!user && <button className="headerBtn">Sign in / Register</button>}
@@ -117,6 +109,7 @@ const Header = ({ type }) => {
                     "MM/dd/yyyy"
                   )}`}
                 </span>
+
                 {openDate && (
                   <DateRange
                     editableDateInputs
