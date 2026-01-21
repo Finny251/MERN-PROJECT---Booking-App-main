@@ -13,6 +13,7 @@ const useFetch = (url) => {
         const res = await fetch(url, {
           headers: {
             Authorization: `Bearer ${user?.accessToken}`,
+            if (!user?.accessToken) return;
           },
         });
 
