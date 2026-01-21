@@ -10,9 +10,7 @@ const Datatable = ({ columns }) => {
   const path = location.pathname.split("/")[1];
 
   const [list, setList] = useState([]);
-  const { data, loading, error } = useFetch(
-    `process.env.REACT_APP_API_URL/${path}`
-  );
+  const { data, loading, error } = useFetch(`/api/${path}`);
 
   useEffect(() => {
     setList(data);
@@ -23,11 +21,14 @@ const Datatable = ({ columns }) => {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user?.accessToken) return;
 
-      await axios.delete(`http://localhost:8800/api/${path}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/${path}/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
 
       setList((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
@@ -40,21 +41,19 @@ const Datatable = ({ columns }) => {
       field: "action",
       headerName: "Action",
       width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-            <Link to={`/${path}/${params.row._id}`} style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
-            </Link>
-            <div
-              className="deleteButton"
-              onClick={() => handleDelete(params.row._id)}
-            >
-              Delete
-            </div>
+      renderCell: (params) => (
+        <div className="cellAction">
+          <Link to={`/${path}/${params.row._id}`} style={{ textDecoration: "none" }}>
+            <div className="viewButton">View</div>
+          </Link>
+          <div
+            className="deleteButton"
+            onClick={() => handleDelete(params.row._id)}
+          >
+            Delete
           </div>
-        );
-      },
+        </div>
+      ),
     },
   ];
 
