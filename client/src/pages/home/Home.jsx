@@ -1,16 +1,11 @@
 import "./home.css";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
-import { useContext } from "react";
 import useFetch from "../../hooks/useFetch";
 import SearchItem from "../../components/searchItem/SearchItem";
 
 const Home = () => {
-  const { city } = useContext(SearchContext);
-
-  const { data, loading } = useFetch(
-    `/api/hotels${city ? `?city=${city}` : ""}`
-  );
+  const { data, loading } = useFetch("/api/hotels");
 
   return (
     <div>
