@@ -25,16 +25,23 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //middlewares
+
 app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://creative-eclair-51bbb4.netlify.app",
-      "https://YOUR-ADMIN-SITE.netlify.app",
+      "http://localhost:3001",
+      "https://creative-eclair-51bbb4.netlify.app",   // client
+      "https://mern-project-admin.netlify.app",      // admin
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// IMPORTANT: allow preflight
+app.options("*", cors());
 app.use(cookieParser());
 app.use(express.json());
 
