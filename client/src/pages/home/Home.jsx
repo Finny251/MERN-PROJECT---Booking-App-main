@@ -1,29 +1,25 @@
-import "./home.css";
-import Navbar from "../../components/navbar/Navbar";
+import Featured from "../../components/featured/Featured";
+import FeaturedProperties from "../../components/featuredProperties/FeaturedProperties";
+import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
-import useFetch from "../../hooks/useFetch";
-import SearchItem from "../../components/searchItem/SearchItem";
+import MailList from "../../components/mailList/MailList";
+import Navbar from "../../components/navbar/Navbar";
+import PropertyList from "../../components/propertyList/PropertyList";
+import "./home.css";
 
 const Home = () => {
-  const { data, loading } = useFetch("/api/hotels");
-
   return (
     <div>
       <Navbar />
-      <Header />
-
+      <Header/>
       <div className="homeContainer">
-        <h1 className="homeTitle">Available Hotels</h1>
-
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <div className="homeList">
-            {data.map((item) => (
-              <SearchItem item={item} key={item._id} />
-            ))}
-          </div>
-        )}
+        <Featured/>
+        <h1 className="homeTitle">Browse by property type</h1>
+        <PropertyList/>
+        <h1 className="homeTitle">Homes guests love</h1>
+        <FeaturedProperties/>
+        <MailList/>
+        <Footer/>
       </div>
     </div>
   );

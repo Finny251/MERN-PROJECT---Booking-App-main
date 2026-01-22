@@ -1,16 +1,16 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
+import { userColumns, userRows } from "../../datatablesource";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
 
-const Datatable = ({ columns }) => {
+const Datatable = ({columns}) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
-
-  const [list, setList] = useState([]);
-  const { data, loading, error } = useFetch(`/api/${path}`);
+  const [list, setList] = useState();
+  const { data, loading, error } = useFetch(`/${path}`);
 
   useEffect(() => {
     setList(data);
@@ -18,22 +18,9 @@ const Datatable = ({ columns }) => {
 
   const handleDelete = async (id) => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user?.accessToken) return;
-
-      await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/${path}/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.accessToken}`,
-          },
-        }
-      );
-
-      setList((prev) => prev.filter((item) => item._id !== id));
-    } catch (err) {
-      console.error(err);
-    }
+      await axios.delete(`/${path}/${id}`);
+      setList(list.filter((item) => item._id !== id));
+    } catch (err) {}
   };
 
   const actionColumn = [
@@ -41,25 +28,23 @@ const Datatable = ({ columns }) => {
       field: "action",
       headerName: "Action",
       width: 200,
-      renderCell: (params) => (
-        <div className="cellAction">
-          <Link to={`/${path}/${params.row._id}`} style={{ textDecoration: "none" }}>
-            <div className="viewButton">View</div>
-          </Link>
-          <div
-            className="deleteButton"
-            onClick={() => handleDelete(params.row._id)}
-          >
-            Delete
+      renderCell: (params) => {
+        return (
+          <div className="cellAction">
+            <Link to="/users/test" style={{ textDecoration: "none" }}>
+              <div className="viewButton">View</div>
+            </Link>
+            <div
+              className="deleteButton"
+              onClick={() => handleDelete(params.row._id)}
+            >
+              Delete
+            </div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
   ];
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
-
   return (
     <div className="datatable">
       <div className="datatableTitle">

@@ -2,38 +2,24 @@ import "./navbar.css";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
-  const { user, dispatch } = useContext(AuthContext);
-
-  const handleLogout = () => {
-    dispatch({ type: "LOGOUT" });
-  };
-
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   return (
     <div className="navbar">
       <div className="navContainer">
         <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
           <span className="logo">lamabooking</span>
         </Link>
-
-        {user ? (
+        {user ? user.username : (
           <div className="navItems">
-            <span className="navUsername">
-              {user.details.username}
-            </span>
-            <button className="navButton" onClick={handleLogout}>
-              Logout
+            <button className="navButton" onClick={() => navigate("/register")}>
+              Register
             </button>
-          </div>
-        ) : (
-          <div className="navItems">
-            <Link to="/register">
-              <button className="navButton">Register</button>
-            </Link>
-            <Link to="/login">
-              <button className="navButton">Login</button>
-            </Link>
+            <button className="navButton" onClick={() => navigate("/login")}>
+              Login
+            </button>
           </div>
         )}
       </div>

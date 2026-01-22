@@ -8,12 +8,9 @@ import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-dotenv.config();
-mongoose.set("strictQuery", false);
-
 const app = express();
+dotenv.config();
 
-// MongoDB connection
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
@@ -27,18 +24,19 @@ mongoose.connection.on("disconnected", () => {
   console.log("mongoDB disconnected!");
 });
 
-// Middlewares
-app.use(cors());
+//middlewares
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
 app.use(cookieParser());
 app.use(express.json());
 
-// Routes
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong!";
@@ -50,8 +48,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Server start
 app.listen(8800, () => {
   connect();
-  console.log("Connected to backend on port 8800.");
+  console.log("Connected to backend.");
 });

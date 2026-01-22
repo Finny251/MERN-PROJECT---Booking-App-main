@@ -1,18 +1,12 @@
-.homeContainer {
-  max-width: 1024px;
-  margin: 30px auto;
-  padding: 0 20px;
-}
-
-.homeTitle {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.homeList {
+.homeContainer{
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 30px;
 }
 
+.homeTitle{
+  width: 1024px;
+  font-size: 20px;
+}

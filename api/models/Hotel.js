@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const HotelSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -50,4 +49,6 @@ const HotelSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Hotel", HotelSchema);
+export default mongoose.model("Hotel", HotelSchema)
+
+
