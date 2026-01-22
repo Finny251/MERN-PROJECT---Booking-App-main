@@ -25,10 +25,16 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //middlewares
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://creative-eclair-51bbb4.netlify.app",
+      "https://YOUR-ADMIN-SITE.netlify.app",
+    ],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 
