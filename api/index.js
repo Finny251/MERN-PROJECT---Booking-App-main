@@ -26,21 +26,31 @@ mongoose.connection.on("disconnected", () => {
 
 //middlewares
 
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "https://mern-project-client.netlify.app", // client
+  "https://mern-project-admin.netlify.app",  // admin
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "https://creative-eclair-51bbb4.netlify.app",   // client
-      "https://mern-project-admin.netlify.app",      // admin
-    ],
+    origin: function (origin, callback) {
+      // allow server-to-server or tools with no origin
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// IMPORTANT: allow preflight
+// handle preflight
 app.options("*", cors());
 app.use(cookieParser());
 app.use(express.json());
